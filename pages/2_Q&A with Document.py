@@ -119,14 +119,22 @@ provider = OpenAI()
 from trulens_eval.app import App
 context = App.select_context(chain)
 
-from trulens_eval.feedback import Groundedness
-grounded = Groundedness(groundedness_provider=OpenAI())
+from trulens_eval.feedback.provider import OpenAI
+from trulens_eval import Feedback
+import numpy as np
+
+# Initialize provider class
+provider = OpenAI()
+
+# select context to be used in feedback. the location of context is app specific.
+from trulens_eval.app import App
+context = App.select_context(rag_chain)
+
 # Define a groundedness feedback function
 f_groundedness = (
-    Feedback(grounded.groundedness_measure_with_cot_reasons)
+    Feedback(provider.groundedness_measure_with_cot_reasons)
     .on(context.collect()) # collect context chunks into a list
     .on_output()
-    .aggregate(grounded.grounded_statements_aggregator)
 )
 
 # Question/answer relevance between overall question and answer.
