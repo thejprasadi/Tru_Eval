@@ -232,7 +232,7 @@ cont = None
 promptSubCheck = None
 promptSub = ""
     
-st.subheader("Check the Custom Metrics",divider=False)
+st.subheader("Custom Metric Score",divider=False)
 answer = st.checkbox("Answer")
 question = st.checkbox("Question")
 context = st.checkbox("Context")
