@@ -112,21 +112,22 @@ def coustom_metrix_evaluate(question):
 
 tru=Tru()
 
+from trulens_eval.feedback.provider import OpenAI
+from trulens_eval import Feedback
+import numpy as np
+
 # Initialize provider class
 provider = OpenAI()
 
 # select context to be used in feedback. the location of context is app specific.
 from trulens_eval.app import App
-context = App.select_context(chain)
+context = App.select_context(rag_chain)
 
-from trulens_eval.feedback import Groundedness
-grounded = Groundedness(groundedness_provider=OpenAI())
 # Define a groundedness feedback function
 f_groundedness = (
-    Feedback(grounded.groundedness_measure_with_cot_reasons)
+    Feedback(provider.groundedness_measure_with_cot_reasons)
     .on(context.collect()) # collect context chunks into a list
     .on_output()
-    .aggregate(grounded.grounded_statements_aggregator)
 )
 
 # Question/answer relevance between overall question and answer.
@@ -141,6 +142,8 @@ f_context_relevance = (
     .on(context)
     .aggregate(np.mean)
 )
+
+
 
 tru_recorder = TruChain(chain,
     app_id='Chain1_ChatApplication',
@@ -190,7 +193,7 @@ st.markdown(
 if st.button('Homepage', key='backend_button', type="primary", use_container_width=True, help="Go to Homepage"):
     st.switch_page("1_Homepage.py")
 
-st.title("Evaluation of Contextual Serach")
+st.title("Evaluation of Contextual Search")
     
 st.subheader("Ask the Question",divider=False)
 with st.form('qa_form'):
