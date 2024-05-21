@@ -121,7 +121,7 @@ provider = OpenAI()
 
 # select context to be used in feedback. the location of context is app specific.
 from trulens_eval.app import App
-context = App.select_context(rag_chain)
+context = App.select_context(chain)
 
 
 from trulens_eval.feedback.provider import OpenAI
