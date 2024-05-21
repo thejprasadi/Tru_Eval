@@ -237,10 +237,11 @@ answer = st.checkbox("Answer")
 question = st.checkbox("Question")
 context = st.checkbox("Context")
 #promptSubCheck = st.checkbox("Prompt")
-promptSubCheck=st.text_input("Prompt",placeholder='Please Enter the Custom DefinedPrompt', key = 'givenPrompt')
+mainPrompt = st.text_input("RAG Questions",placeholder='Please Enter the Question', key = 'mainPrompt')
+promptSubCheck=st.text_input("Prompt",placeholder='Please Enter the Custom Defined Prompt', key = 'givenPrompt')
 # if promptSubCheck:
 #     st.text_input("Prompt",placeholder='Please Enter the Custom DefinedPrompt', key = 'givenPrompt')
-mainPrompt = st.text_input("RAG Questions",placeholder='Please Enter the Question', key = 'mainPrompt')
+
  
 submitted_btn = st.button("Evaluate with Custom Metrics", use_container_width=True, type="secondary")
 
