@@ -137,7 +137,8 @@ def assign_variables(ans, ques, cont):
 
 
 def manage_variable(ans, ques, cont, promptMain, promptSub):
-    returned_ans, returned_ques, returned_cont = assign_variables(ans, ques, cont)
+    returned_ans, returned_ques, returned_cont = ans,ques,cont
+    
     prompt = promptSub
 
     # Check and define f_custom_function based on variable values
