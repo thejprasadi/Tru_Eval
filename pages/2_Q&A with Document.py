@@ -123,8 +123,7 @@ provider = OpenAI()
 from trulens_eval.app import App
 context = App.select_context(rag_chain)
 
-<<<<<<< HEAD
-=======
+
 from trulens_eval.feedback.provider import OpenAI
 from trulens_eval import Feedback
 import numpy as np
