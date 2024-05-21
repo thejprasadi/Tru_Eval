@@ -70,7 +70,7 @@ provider = OpenAI()
 from trulens_eval.app import App
 context = App.select_context(chain)
 
-from trulens_eval.feedback import Groundedness,GroundTruthAgreement
+from trulens_eval.feedback import GroundTruthAgreement
 grounded = Groundedness(groundedness_provider=OpenAI())
 # Define a groundedness feedback function
 
