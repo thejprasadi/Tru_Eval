@@ -237,7 +237,7 @@ answer = st.checkbox("Answer")
 question = st.checkbox("Question")
 context = st.checkbox("Context")
 #promptSubCheck = st.checkbox("Prompt")
-mainPrompt = st.text_input("RAG Questions",placeholder='Please Enter the Question', key = 'mainPrompt')
+mainPrompt = st.text_input("RAG Question",placeholder='Please Enter the Question', key = 'mainPrompt')
 promptSubCheck=st.text_input("Prompt",placeholder='Please Enter the Custom Defined Prompt', key = 'givenPrompt')
 # if promptSubCheck:
 #     st.text_input("Prompt",placeholder='Please Enter the Custom DefinedPrompt', key = 'givenPrompt')
