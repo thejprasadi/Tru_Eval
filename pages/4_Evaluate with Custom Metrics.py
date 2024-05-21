@@ -258,6 +258,9 @@ if submitted_btn:
         
         
     rec = manage_variable(ans, ques, cont, promptMain, promptSub)
+    st.markdown(rec.main_output)
+    st.write("")
+    st.write("")
     
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
