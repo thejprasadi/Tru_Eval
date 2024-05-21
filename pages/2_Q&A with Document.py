@@ -123,6 +123,20 @@ provider = OpenAI()
 from trulens_eval.app import App
 context = App.select_context(rag_chain)
 
+<<<<<<< HEAD
+=======
+from trulens_eval.feedback.provider import OpenAI
+from trulens_eval import Feedback
+import numpy as np
+
+# Initialize provider class
+provider = OpenAI()
+
+# select context to be used in feedback. the location of context is app specific.
+from trulens_eval.app import App
+context = App.select_context(chain)
+
+>>>>>>> 85e5b63c4d7cc699da03f7c38798f8917096dc0a
 # Define a groundedness feedback function
 f_groundedness = (
     Feedback(provider.groundedness_measure_with_cot_reasons)
@@ -147,7 +161,7 @@ f_context_relevance = (
 
 tru_recorder = TruChain(chain,
     app_id='Chain1_ChatApplication',
-    feedbacks=[f_answer_relevance, f_context_relevance, f_groundedness])
+    feedbacks=[f_groundedness, f_answer_relevance, f_context_relevance])
 
 def get_evaluation_report(user_question):
     with tru_recorder as recording:

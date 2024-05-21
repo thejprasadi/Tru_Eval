@@ -136,13 +136,13 @@ def assign_variables(ans, ques, cont):
     return ans, ques, cont
 prompt="initial"
 from trulens_eval.app import App
-context = App.select_context(chain)
+
 
 def manage_variable(ans, ques, cont, promptMain, promptSub):
     returned_ans, returned_ques, returned_cont = ans,ques,cont
     global prompt
     prompt = promptSub
-    global context
+    context = App.select_context(chain)
 
     # Check and define f_custom_function based on variable values
     if returned_ans is not None and returned_ques is not None and returned_cont is not None:
@@ -236,11 +236,13 @@ st.subheader("Check the Custom Metrics",divider=False)
 answer = st.checkbox("Answer")
 question = st.checkbox("Question")
 context = st.checkbox("Context")
-promptSubCheck = st.checkbox("Prompt")
-if promptSubCheck:
-    st.text_input("Prompt",placeholder='Please Enter the Prompt', key = 'givenPrompt')
-mainPrompt = st.text_input("RAG Questions",placeholder='Please Enter the Prompt', key = 'mainPrompt')
+#promptSubCheck = st.checkbox("Prompt")
+mainPrompt = st.text_input("RAG Questions",placeholder='Please Enter the Question', key = 'mainPrompt')
+promptSubCheck=st.text_input("Prompt",placeholder='Please Enter the Custom Defined Prompt', key = 'givenPrompt')
+# if promptSubCheck:
+#     st.text_input("Prompt",placeholder='Please Enter the Custom DefinedPrompt', key = 'givenPrompt')
 
+ 
 submitted_btn = st.button("Evaluate with Custom Metrics", use_container_width=True, type="secondary")
 
 
@@ -251,13 +253,16 @@ if submitted_btn:
         ques = 'ok'
     if context:
         cont = 'ok'
-    if promptSubCheck:
-        promptSub = st.session_state.givenPrompt
+    
+    promptSub = st.session_state.givenPrompt
         
     promptMain = st.session_state.mainPrompt
         
         
     rec = manage_variable(ans, ques, cont, promptMain, promptSub)
+    st.markdown(rec.main_output)
+    st.write("")
+    st.write("")
     
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
