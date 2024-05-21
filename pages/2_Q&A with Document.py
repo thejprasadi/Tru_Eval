@@ -152,7 +152,7 @@ f_context_relevance = (
 
 tru_recorder = TruChain(chain,
     app_id='Chain1_ChatApplication',
-    feedbacks=[f_answer_relevance, f_context_relevance, f_groundedness])
+    feedbacks=[_groundedness, f_answer_relevance, f_context_relevance])
 
 def get_evaluation_report(user_question):
     with tru_recorder as recording:
