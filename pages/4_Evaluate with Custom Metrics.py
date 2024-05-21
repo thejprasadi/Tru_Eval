@@ -136,13 +136,13 @@ def assign_variables(ans, ques, cont):
     return ans, ques, cont
 prompt="initial"
 from trulens_eval.app import App
-context = App.select_context(chain)
+
 
 def manage_variable(ans, ques, cont, promptMain, promptSub):
     returned_ans, returned_ques, returned_cont = ans,ques,cont
     global prompt
     prompt = promptSub
-    global context
+    context = App.select_context(chain)
 
     # Check and define f_custom_function based on variable values
     if returned_ans is not None and returned_ques is not None and returned_cont is not None:
