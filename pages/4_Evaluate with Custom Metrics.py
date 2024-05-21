@@ -251,8 +251,8 @@ if submitted_btn:
         ques = 'ok'
     if context:
         cont = 'ok'
-    if promptSubCheck:
-        promptSub = st.session_state.givenPrompt
+    
+    promptSub = st.session_state.givenPrompt
         
     promptMain = st.session_state.mainPrompt
         
