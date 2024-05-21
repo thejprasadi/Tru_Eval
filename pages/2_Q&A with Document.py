@@ -24,6 +24,7 @@ from trulens_eval.feedback.provider import OpenAI
 from trulens_eval import Feedback
 import numpy as np
 from trulens_eval import TruChain, Tru
+from langchain.prompts import PromptTemplate
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
@@ -55,6 +56,55 @@ chain = (
     | model
     | StrOutputParser()
     )
+
+
+### Start Custom Metrix
+### Start Custom Metrix
+### Start Custom Metrix
+
+template2 = """
+
+
+You are an AI assistant. Your job is to evaluate RAG pipeline and provide metrics.You are provided user question, retrieved data(context) and generated answer.
+
+Document: {retrieved_data}
+Question: {question}
+Answer:  {answer}
+
+Below are the tasks you have to verify and provide the evaluation metrics or accuracy for each task:
+
+Task1(Context Relevance): How relevant are the retrieved text chucks to the question?
+Task2(Answer Relevance): How relevant is the final generated answer to the question?
+Task3(Groundedness): How factually accurate is the final generated answer?
+
+Finally provide accumulated/overall score for above 3 tasks.
+Explain your reasoning 
+
+<Output format>
+Context Relevance: 0.8
+Answer Relevance: 0.9
+Groundedness: 0.7
+Overall score: 0.8
+"""
+
+tempt = PromptTemplate.from_template(template2)
+tempt.input_variables =["answer","retrieved_data","question"]
+
+def coustom_metrix_evaluate(question):
+    answer = chain.invoke(question)
+    results=retriever.invoke(question)
+    retrived_data=format_docs(results)
+    prompt2 = tempt.format(
+        answer=answer,
+        retrieved_data=retrived_data,
+        question=question
+    )
+    response = model.invoke(prompt2)
+    return response.content
+
+### End Custom Metrix
+### End Custom Metrix
+### End Custom Metrix
 
 # Start Trulens
 # Start Trulens
@@ -113,6 +163,7 @@ def get_evaluation_report(user_question):
 
 def get_response(question):
     response = chain.invoke(question)
+    # retrived_data=retriever.invoke(question)
     return response
     
 
@@ -139,7 +190,7 @@ st.markdown(
 if st.button('Homepage', key='backend_button', type="primary", use_container_width=True, help="Go to Homepage"):
     st.switch_page("1_Homepage.py")
 
-st.title("Q&A with Docuemnt")
+st.title("Evaluation of Contextual Serach")
     
 st.subheader("Ask the Question",divider=False)
 with st.form('qa_form'):
@@ -155,13 +206,14 @@ if submitted_btn:
     question = st.session_state.question
     st.subheader("Answer",divider=False)
     st.markdown(get_response(question))
+    
     results = get_evaluation_report(question)
     
     st.write("")
     st.write("")
     st.write("") 
     
-    st.subheader("Evaluation Results",divider=False)
+    st.subheader("TruLens Evaluation Results",divider=False)
     for feedback, feedback_result in results.wait_for_feedback_results().items():
         if feedback.name == "relevance":
             st.write("Answer Relevance")
@@ -178,4 +230,11 @@ if submitted_btn:
             st.text("How factually accurate is the final generated answer?")
             st.text(f"Groundedness: {feedback_result.result}")
             st.divider()
+
+    st.write("")
+    st.write("")
+    st.write("") 
+    
+    st.subheader("Custom Evaluation Metrics",divider=False)
+    st.markdown(coustom_metrix_evaluate(question))
             
