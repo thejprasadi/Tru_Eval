@@ -134,11 +134,11 @@ standalone = Custom_FeedBack()
 def assign_variables(ans, ques, cont):
     # Simply return the provided values
     return ans, ques, cont
-
+prompt="initial"
 
 def manage_variable(ans, ques, cont, promptMain, promptSub):
     returned_ans, returned_ques, returned_cont = ans,ques,cont
-    
+    global prompt
     prompt = promptSub
 
     # Check and define f_custom_function based on variable values
