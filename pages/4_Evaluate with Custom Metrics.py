@@ -74,7 +74,7 @@ from trulens_eval.utils.generated import re_0_10_rating
 from typing import Optional, Dict, Tuple
 
 class Custom_FeedBack(OpenAI):
-    def check_cstom_metric(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[str] = None) -> float:
+    def custom_metric_score(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[str] = None) -> float:
         """
         Custom feedback function to evaluate RAG using custom metric.
 
@@ -147,42 +147,42 @@ def manage_variable(ans, ques, cont, promptMain, promptSub):
     # Check and define f_custom_function based on variable values
     if returned_ans is not None and returned_ques is not None and returned_cont is not None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(answer=Select.RecordOutput)
             .on(question=Select.RecordInput)
             .on(context)
         )
     elif returned_ans is None and returned_ques is None and returned_cont is not None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(context)
         )
     elif returned_ans is None and returned_ques is not None and returned_cont is None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(question=Select.RecordInput)
         )
     elif returned_ans is not None and returned_ques is None and returned_cont is None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(answer=Select.RecordOutput)
         )
     elif returned_ans is None and returned_ques is not None and returned_cont is not None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(question=Select.RecordInput)
             .on(context)
         )
     elif returned_ans is not None and returned_ques is None and returned_cont is not None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(answer=Select.RecordOutput)
             .on(context)
         )
         
     elif returned_ans is not None and returned_ques is not None and returned_cont is None:
         f_custom_function = (
-            Feedback(standalone.check_cstom_metric)
+            Feedback(standalone.custom_metric_score)
             .on(answer=Select.RecordOutput)
             .on(question=Select.RecordInput)
         )
