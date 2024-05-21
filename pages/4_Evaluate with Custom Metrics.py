@@ -142,6 +142,7 @@ def manage_variable(ans, ques, cont, promptMain, promptSub):
     returned_ans, returned_ques, returned_cont = ans,ques,cont
     global prompt
     prompt = promptSub
+    global context
 
     # Check and define f_custom_function based on variable values
     if returned_ans is not None and returned_ques is not None and returned_cont is not None:
