@@ -233,11 +233,22 @@ promptSubCheck = None
 promptSub = ""
     
 st.subheader("Custom Metric Score",divider=False)
-answer = st.checkbox("Answer")
-question = st.checkbox("Question")
-context = st.checkbox("Context")
-#promptSubCheck = st.checkbox("Prompt")
 mainPrompt = st.text_input("RAG Question",placeholder='Please Enter the Question', key = 'mainPrompt')
+cols = st.columns(3)  # Adjust the number of columns if needed
+
+# Define the checkboxes in each column
+with cols[0]:
+    answer = st.checkbox("Answer")
+with cols[1]:
+    question = st.checkbox("Question")
+with cols[2]:
+    context = st.checkbox("Context")
+
+# answer = st.checkbox("Answer")
+# question = st.checkbox("Question")
+# context = st.checkbox("Context")
+#promptSubCheck = st.checkbox("Prompt")
+#mainPrompt = st.text_input("RAG Question",placeholder='Please Enter the Question', key = 'mainPrompt')
 promptSubCheck=st.text_input("Prompt",placeholder='Please Enter the Custom Defined Prompt', key = 'givenPrompt')
 # if promptSubCheck:
 #     st.text_input("Prompt",placeholder='Please Enter the Custom DefinedPrompt', key = 'givenPrompt')
