@@ -99,7 +99,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("Evaluation of Contextual Serach")
+st.title("Evaluation of Contextual Search")
 
 st.subheader("Upload Document",divider=False)
 
