@@ -135,6 +135,8 @@ def assign_variables(ans, ques, cont):
     # Simply return the provided values
     return ans, ques, cont
 prompt="initial"
+from trulens_eval.app import App
+context = App.select_context(chain)
 
 def manage_variable(ans, ques, cont, promptMain, promptSub):
     returned_ans, returned_ques, returned_cont = ans,ques,cont
