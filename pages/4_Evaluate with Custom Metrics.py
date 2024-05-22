@@ -284,10 +284,10 @@ if submitted_btn:
     # meta=feedback_result.calls[0].meta
         if 'reasons' in meta:
             main_reason = meta['reasons']
-        elif 'reason' in meta:
+        else 'reason' in meta:
             main_reason = meta['reason']
-        else:
-            main_reason = response.args['response']
+        # else:
+        #     main_reason = response.args['response']
             
         if feedback.name == "custom_metric_score":
             st.write("Custom Metric Score")
