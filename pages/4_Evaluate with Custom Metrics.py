@@ -74,7 +74,7 @@ from trulens_eval.utils.generated import re_0_10_rating
 from typing import Optional, Dict, Tuple
 
 class Custom_FeedBack(OpenAI):
-    def custom_metric_score(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[str] = None) -> float:
+    def custom_metric_score(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[str] = None) -> Tuple[float, Dict]:
         """
         Custom feedback function to evaluate RAG using custom metric.
 
@@ -85,6 +85,7 @@ class Custom_FeedBack(OpenAI):
 
         Returns:
             float: A value between 0 and 1. 0 being "not related to the professional_prompt" and 1 being "related to the professional_prompt".
+            Dict:reason for scoring
         """
         global prompt
 
