@@ -284,7 +284,7 @@ if submitted_btn:
     # meta=feedback_result.calls[0].meta
         if 'reasons' in meta:
             main_reason = meta['reasons']
-        else 'reason' in meta:
+        elif 'reason' in meta:
             main_reason = meta['reason']
         # else:
         #     main_reason = response.args['response']
