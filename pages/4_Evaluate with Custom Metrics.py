@@ -279,6 +279,7 @@ if submitted_btn:
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
         meta=feedback_result.calls[0].meta
+        response=feedback_result.calls[0]
     #     st.write(feedback.name, feedback_result.result)
     # for feedback, feedback_result in results.wait_for_feedback_results().items():
     # meta=feedback_result.calls[0].meta
@@ -287,7 +288,9 @@ if submitted_btn:
         elif 'reason' in meta:
             main_reason = meta['reason']
         else:
-            print("No specific reason provided")
+            main_reason = response.args['response']
+            
+            
         #     main_reason = response.args['response']
             
         if feedback.name == "custom_metric_score":
