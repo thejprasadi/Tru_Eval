@@ -278,6 +278,7 @@ if submitted_btn:
     
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
+        meta=feedback_result.calls[0].meta
     #     st.write(feedback.name, feedback_result.result)
     # for feedback, feedback_result in results.wait_for_feedback_results().items():
     # meta=feedback_result.calls[0].meta
