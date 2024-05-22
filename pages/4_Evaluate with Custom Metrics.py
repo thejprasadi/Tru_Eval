@@ -278,7 +278,7 @@ if submitted_btn:
     
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
-        meta=feedback_result.calls[0].meta
+        meta=feedback_result.calls[0]
         # main_reason=meta['reason']
         
         
