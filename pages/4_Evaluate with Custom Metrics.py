@@ -312,7 +312,7 @@ if submitted_btn:
             
         if feedback.name == "custom_metric_score":
             st.write("Custom Metric Score")
-            st.text(f"Answer Relevance: {feedback_result.result}")
+            st.text(f"Custom Metric Score: {feedback_result.result}")
             st.markdown(f"Reason: {main_meta}")
             st.divider()
         
