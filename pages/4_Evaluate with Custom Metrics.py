@@ -286,7 +286,8 @@ if submitted_btn:
             main_reason = meta['reasons']
         elif 'reason' in meta:
             main_reason = meta['reason']
-        # else:
+        else:
+            print("No specific reason provided")
         #     main_reason = response.args['response']
             
         if feedback.name == "custom_metric_score":
