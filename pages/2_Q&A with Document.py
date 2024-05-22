@@ -231,20 +231,33 @@ if submitted_btn:
     
     st.subheader("TruLens Evaluation Results",divider=False)
     for feedback, feedback_result in results.wait_for_feedback_results().items():
+        response=feedback_result.calls[0]
+        meta=feedback_result.calls[0].meta
+
+        if 'reasons' in meta:
+            main_reason = meta['reasons']
+        elif 'reason' in meta:
+            main_reason = meta['reason']
+        else:
+            main_reason = response.args['response']
+            
         if feedback.name == "relevance":
             st.write("Answer Relevance")
             st.text("How relevant is the final generated answer to the question?")
             st.text(f"Answer Relevance: {feedback_result.result}")
+            st.text(f"Reason: {main_reason}")
             st.divider()
         elif feedback.name == "context_relevance_with_cot_reasons":
             st.write("Context Relevance")
             st.text("How relevant are the retrieved text chucks to the question?")
             st.text(f"Context Relevance: {feedback_result.result}")
+            st.text(f"Reason: {main_reason}")
             st.divider()
         elif feedback.name == "groundedness_measure_with_cot_reasons":
             st.write("Groundedness")
             st.text("How factually accurate is the final generated answer?")
             st.text(f"Groundedness: {feedback_result.result}")
+            st.text(f"Reason: {main_reason}")
             st.divider()
 
     st.write("")
