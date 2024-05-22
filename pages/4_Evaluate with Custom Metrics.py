@@ -73,61 +73,87 @@ from trulens_eval.feedback.provider import OpenAI
 from trulens_eval.utils.generated import re_0_10_rating
 from typing import Optional, Dict, Tuple
 
+from trulens_eval.feedback.provider import OpenAI
+from trulens_eval.utils.generated import re_0_10_rating
+from typing import Optional, Dict, Tuple
+from trulens_eval.feedback import prompts
+
 class Custom_FeedBack(OpenAI):
-    def custom_metric_score(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[str] = None) -> Tuple[float, Dict]:
-        """
-        Custom feedback function to evaluate RAG using custom metric.
+    def custom_metric_score(self, answer: Optional[str] = None, question: Optional[str] = None, context: Optional[any] = None) -> Tuple[float, Dict]:
+      """
+      Tweaked version of context relevance, extending AzureOpenAI provider.
+      A function that completes a template to check the relevance of the statement to the question.
+      Scoring guidelines for scores 5-8 are removed to push the LLM to more extreme scores.
+      Also uses chain of thought methodology and emits the reasons.
 
-        Args:
-            answer (str): The generated answer.
-            question (str): The question being asked.
-            context (str): Context used to generate the answer.
+      Args:
+          question (str): A question being asked.
+          context (str): A statement to the question.
 
-        Returns:
-            float: A value between 0 and 1. 0 being "not related to the professional_prompt" and 1 being "related to the professional_prompt".
-            Dict:reason for scoring
-        """
-        global prompt
+      Returns:
+          float: A value between 0 and 1. 0 being "not relevant" and 1 being "relevant".
+      """
+      global prompt
 
-        if answer is not None and question is not None and context is not None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Answer: {}\n" \
-                                  "Question: {}\n" \
-                                  "Context: {}\n".format(prompt, answer, question, context)
-        elif answer is not None and question is not None and context is None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Answer: {}\n" \
-                                  "Question: {}\n".format(prompt, answer, question)
-        elif answer is not None and question is None and context is not None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Answer: {}\n" \
-                                  "Context: {}\n".format(prompt, answer, context)
-        elif answer is None and question is not None and context is not None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Question: {}\n" \
-                                  "Context: {}\n".format(prompt, question, context)
-        elif answer is not None and question is None and context is None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Answer: {}\n".format(prompt, answer)
-        elif answer is None and question is not None and context is None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Question: {}\n".format(prompt, question)
-        elif answer is None and question is None and context is not None:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "Context: {}\n".format(prompt, context)
-        else:
-            professional_prompt = "prompt: {}\n" \
-                                  "where 0 is not at all related and 10 is extremely related: \n\n" \
-                                  "No answer, question, or context provided.\n".format(prompt)
+      if answer is not None and question is not None and context is not None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Answer: {}\n" \
+                                "Question: {}\n" \
+                                "Context: {}\n" \
+                                "{}\n" .format(prompt, answer, question, context, prompts.COT_REASONS_TEMPLATE)
+      elif answer is not None and question is not None and context is None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Answer: {}\n" \
+                                "Question: {}\n" \
+                                "{}\n" .format(prompt, answer, question, prompts.COT_REASONS_TEMPLATE)
+      elif answer is not None and question is None and context is not None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Answer: {}\n" \
+                                "Context: {}\n" \
+                                "{}\n" .format(prompt, answer, context, prompts.COT_REASONS_TEMPLATE)
+      elif answer is None and question is not None and context is not None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Question: {}\n" \
+                                "Context: {}\n" \
+                                "{}\n" .format(prompt, question, context, prompts.COT_REASONS_TEMPLATE)
+      elif answer is not None and question is None and context is None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Answer: {}\n" \
+                                "{}\n" .format(prompt, answer, prompts.COT_REASONS_TEMPLATE)
+      elif answer is None and question is not None and context is None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Question: {}\n" \
+                                "{}\n" .format(prompt, question, prompts.COT_REASONS_TEMPLATE)
+      elif answer is None and question is None and context is not None:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "Context: {}\n" \
+                                "{}\n" .format(prompt, context, prompts.COT_REASONS_TEMPLATE)
+      else:
+          professional_prompt = "prompt: {}\n" \
+                                "where 0 is not at all related and 10 is extremely related: \n\n" \
+                                "No answer, question, or context provided.\n" \
+                                "{}\n" .format(prompt, prompts.COT_REASONS_TEMPLATE)
 
-        return self.generate_score_and_reasons(system_prompt=professional_prompt)
+      system_prompt = prompts.CONTEXT_RELEVANCE_SYSTEM.replace("- STATEMENT that is RELEVANT to most of the QUESTION should get a score of 0 - 10. where 0 is not at all RELEVANCE and 10 is extremely RELEVANCE.\n\n", "")
+      user_prompt = professional_prompt
+      # user_prompt = user_prompt.replace( "RELEVANCE:", prompts.COT_REASONS_TEMPLATE)
+      # print("----------------")
+      # print("aaa : ",prompts.CONTEXT_RELEVANCE_USER)
+      # print("bbb : ",question)
+      # print("ccc : ",context)
+      # print("ddd : ",prompts.COT_REASONS_TEMPLATE)
+      # print("eee : ",professional_prompt)
+      # print("User Prompt : ",user_prompt)
+      # print("----------------")
+      return self.generate_score_and_reasons(system_prompt, user_prompt)
+
 
 standalone = Custom_FeedBack()
 
@@ -278,7 +304,8 @@ if submitted_btn:
     
     
     for feedback, feedback_result in rec.wait_for_feedback_results().items():
-        meta=feedback_result.calls[0]
+        meta=feedback_result.calls[0].meta
+        main_meta=meta['reason']
         # main_reason=meta['reason']
         
         
@@ -286,7 +313,7 @@ if submitted_btn:
         if feedback.name == "custom_metric_score":
             st.write("Custom Metric Score")
             st.text(f"Answer Relevance: {feedback_result.result}")
-            st.markdown(f"Reason: {meta}")
+            st.markdown(f"Reason: {main_meta}")
             st.divider()
         
     # st.write("Answer: ", ans)
