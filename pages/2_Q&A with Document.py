@@ -251,6 +251,6 @@ if submitted_btn:
     st.write("")
     st.write("") 
     
-    st.subheader("Custom Evaluation Metrics",divider=False)
-    st.markdown(coustom_metrix_evaluate(question))
+    # st.subheader("Custom Evaluation Metrics",divider=False)
+    # st.markdown(coustom_metrix_evaluate(question))
             
