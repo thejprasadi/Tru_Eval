@@ -279,22 +279,20 @@ if submitted_btn:
     
     # for feedback, feedback_result in rec.wait_for_feedback_results().items():
     #     st.write(feedback.name, feedback_result.result)
-    for feedback, feedback_result in results.wait_for_feedback_results().items():
-        
-        meta=feedback_result.calls[0].meta
-
-        if 'reasons' in meta:
-            main_reason = meta['reasons']
-        elif 'reason' in meta:
-            main_reason = meta['reason']
-        else:
-            main_reason = response.args['response']
+      for feedback, feedback_result in results.wait_for_feedback_results().items():
+          meta=feedback_result.calls[0].meta
+          if 'reasons' in meta:
+              main_reason = meta['reasons']
+          elif 'reason' in meta:
+              main_reason = meta['reason']
+          else:
+              main_reason = response.args['response']
             
-        if feedback.name == "custom_metric_score":
-            st.write("Custom Metric Score")
-            st.text(f"Answer Relevance: {feedback_result.result}")
-            st.markdown(f"Reason: {main_reason}")
-            st.divider()
+          if feedback.name == "custom_metric_score":
+              st.write("Custom Metric Score")
+              st.text(f"Answer Relevance: {feedback_result.result}")
+              st.markdown(f"Reason: {main_reason}")
+              st.divider()
         
     # st.write("Answer: ", ans)
     # st.write("Question: ", ques)
