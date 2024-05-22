@@ -277,10 +277,10 @@ if submitted_btn:
     st.write("")
     
     
-    # for feedback, feedback_result in rec.wait_for_feedback_results().items():
+    for feedback, feedback_result in rec.wait_for_feedback_results().items():
     #     st.write(feedback.name, feedback_result.result)
-    for feedback, feedback_result in results.wait_for_feedback_results().items():
-        meta=feedback_result.calls[0].meta
+    # for feedback, feedback_result in results.wait_for_feedback_results().items():
+    # meta=feedback_result.calls[0].meta
         if 'reasons' in meta:
             main_reason = meta['reasons']
         elif 'reason' in meta:
