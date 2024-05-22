@@ -288,7 +288,7 @@ if submitted_btn:
         elif 'reason' in meta:
             main_reason = meta['reason']
         else:
-            main_reason = response.args['response']
+            main_reason = response
             
             
         #     main_reason = response.args['response']
