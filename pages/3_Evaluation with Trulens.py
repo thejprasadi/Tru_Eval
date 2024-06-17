@@ -158,7 +158,7 @@ st.write("")
 def createcvs(data):
     data['Generated Answer']=gen_answer
     data['Score']=score
-    return data.to_csv(index=False).encode('utf-8')
+    return data
     
 if submitted_btn:
     # question = st.session_state.question
@@ -172,6 +172,7 @@ if submitted_btn:
         st.markdown(last_answer_g_t)
         qa_df=[['Question','Answer']]
         csv=createcvs(qa_df)
+        csv=csv.to_csv()
         st.download_button(
             "Press to Download",
             csv,
