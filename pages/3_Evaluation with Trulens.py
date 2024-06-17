@@ -101,7 +101,7 @@ def get_evaluation_report(golden_set):
     recs = recording.records
     
     for r in recs:
-        for feedback_result in r.wait_for_feedback_results().value():
+        for feedback_result in r.wait_for_feedback_results().values():
             score.append(feedback_result)
             
     
