@@ -167,10 +167,11 @@ if submitted_btn:
     st.subheader("Evaluation Details",divider=False)
     if uploaded_excel_file is not None:
         qa_df = pd.read_csv(uploaded_excel_file)
+        qa_df=qa_df[['Question','Answer']]
         golden_set = [{"query": item["Question"], "response": item["Answer"]} for index, item in qa_df.iterrows()]
         last_answer_g_t = get_evaluation_report(golden_set)
         st.markdown(last_answer_g_t)
-        qa_df=qa_df[['Question','Answer']]
+        
         csv=createcvs(qa_df)
     
         st.download_button(
