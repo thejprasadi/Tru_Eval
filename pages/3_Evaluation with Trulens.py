@@ -75,8 +75,10 @@ from trulens_eval.feedback import GroundTruthAgreement
 # Define a groundedness feedback function
 
 
-
+gen_answer=[]
+score=[]
 def get_evaluation_report(golden_set):
+    
     
     f_groundtruth = Feedback(
         GroundTruthAgreement(golden_set).agreement_measure, name="Answer Correctness"
@@ -89,11 +91,19 @@ def get_evaluation_report(golden_set):
     with tru_recorder as recording:
         for q in golden_set:
             res=chain.invoke(q['query'])
+            gen_answer.append(res)
+        
+            
         
         
     records, feedback = tru.get_records_and_feedback(app_ids=[])
     
     recs = recording.records
+    
+    for r in recs:
+        for feedback_result in rec.wait_for_feedback_results().value():
+            score.append(feedback_result)
+            
     
     final_result = tru.get_leaderboard(app_ids=[tru_recorder.app_id])
     
@@ -144,6 +154,11 @@ with st.form('qa_form'):
 st.write("")
 st.write("")
 st.write("") 
+
+def createcvs(data):
+    data['Generated Answer']=gen_answer
+    data['Score']=score
+    return data.to_csv(index=False).encode('utf-8')
     
 if submitted_btn:
     # question = st.session_state.question
@@ -155,4 +170,16 @@ if submitted_btn:
         golden_set = [{"query": item["Question"], "response": item["Answer"]} for index, item in qa_df.iterrows()]
         last_answer_g_t = get_evaluation_report(golden_set)
         st.markdown(last_answer_g_t)
+        qa_df=[['Question','Answer']]
+        csv=createcvs(qa_df)
+        st.download_button(
+            "Press to Download",
+            csv,
+            "Batch_file.csv",
+            "text/csv",
+            key='download-csv'
+        )
+            
+                    
+
         
