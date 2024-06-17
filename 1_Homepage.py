@@ -20,7 +20,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langsmith import Client
 import os
-import asyncio
 import shutil
 import stat, time
 __import__('pysqlite3')
