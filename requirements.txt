@@ -14,5 +14,6 @@ pysqlite3-binary
 bs4 
 tiktoken
 tenacity==8.3.0
+trulens-providers-openai>=1.0.0
 
 
